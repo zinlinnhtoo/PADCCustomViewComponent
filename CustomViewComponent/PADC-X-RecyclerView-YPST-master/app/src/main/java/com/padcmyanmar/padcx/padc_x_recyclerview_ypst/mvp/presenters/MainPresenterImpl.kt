@@ -1,5 +1,6 @@
 package com.padcmyanmar.padcx.padc_x_recyclerview_ypst.mvp.presenters
 
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.padcmyanmar.padcx.padc_x_recyclerview_ypst.data.models.NewsModelImpl
@@ -11,6 +12,29 @@ class MainPresenterImpl : MainPresenter, AbstractBasePresenter<MainView>() {
 
     override fun onTapNewsItem(newsId: Int) {
         mView?.navigateToNewsDetails(newsId)
+    }
+
+    override fun onTapLike() {
+        Log.d("TAG", "onTapLike")
+    }
+
+    override fun onTapComment() {
+        Log.d("TAG", "onTapComment")
+    }
+
+    override fun onTapShare() {
+        Log.d("TAG", "onTapShare")
+    }
+
+    override fun onTapTryAgain() {
+        loadAllNewsFromAPI()
+    }
+
+    private fun loadAllNewsFromAPI() {
+        mNewsModel.getAllNewsFromApiAndSaveToDatabase(
+            onSuccess = {},
+            onError = {}
+        )
     }
 
     override fun onSwipeRefresh(lifecycleOwner: LifecycleOwner) {
@@ -25,10 +49,11 @@ class MainPresenterImpl : MainPresenter, AbstractBasePresenter<MainView>() {
         mView?.enableSwipeRefresh()
         mNewsModel.getAllNews(onError = {
             mView?.disableSwipeRefresh()
-            mView?.displayEmptyView()
+//            mView?.displayEmptyView()
         }).observe(lifeCycleOwner, Observer {
             mView?.disableSwipeRefresh()
-            if (it.isEmpty()) mView?.displayEmptyView() else mView?.displayNewsList(it)
+//            if (it.isEmpty()) mView?.displayEmptyView() else mView?.displayNewsList(it)
+            mView?.displayNewsList(it)
         })
     }
 }

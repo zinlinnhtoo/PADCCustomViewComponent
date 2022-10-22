@@ -19,7 +19,7 @@ class MainActivity : BaseActivity(), MainView {
 
     private lateinit var mAdapter: NewsListAdapter
 
-    private lateinit var viewPodEmpty: EmptyViewPod
+    private lateinit var mViewPodEmpty: EmptyViewPod
 
     private lateinit var mPresenter: MainPresenter
 
@@ -29,11 +29,19 @@ class MainActivity : BaseActivity(), MainView {
 
         setUpPresenter()
 
-        hideEmptyView()
-        setUpSwipeRefresh()
-        setUpRecyclerView()
+//        hideEmptyView()
         setUpViewPod()
+        setUpRecyclerView()
+        setUpSwipeRefresh()
+        setUpListener()
+
         mPresenter.onUiReady(this)
+    }
+
+    private fun setUpListener() {
+        btnNavigate.setOnClickListener {
+            startActivity(ModifyCustomViewActivity.newIntent(this))
+        }
     }
 
     override fun displayNewsList(newsList: List<NewsVO>) {
@@ -42,10 +50,6 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun navigateToNewsDetails(newsId: Int) {
         startActivity(NewsDetailActivity.newItent(this, newsId))
-    }
-
-    override fun displayEmptyView() {
-        showEmptyView()
     }
 
     override fun enableSwipeRefresh() {
@@ -62,8 +66,9 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     private fun setUpViewPod() {
-        viewPodEmpty = vpEmpty as EmptyViewPod
-        viewPodEmpty.setEmptyData(EM_NO_NEWS_AVAILABLE, EMPTY_IMAGE_URL)
+        mViewPodEmpty = vpEmpty as EmptyViewPod
+        mViewPodEmpty.setEmptyData(EM_NO_NEWS_AVAILABLE, EMPTY_IMAGE_URL)
+        mViewPodEmpty.setDelegate(mPresenter)
     }
 
     private fun setUpSwipeRefresh() {
@@ -77,14 +82,7 @@ class MainActivity : BaseActivity(), MainView {
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rvNews.layoutManager = linearLayoutManager
         rvNews.adapter = mAdapter
-    }
 
-    private fun showEmptyView() {
-        vpEmpty.visibility = View.VISIBLE
+        rvNews.setEmptyView(mViewPodEmpty)
     }
-
-    private fun hideEmptyView() {
-        vpEmpty.visibility = View.GONE
-    }
-
 }

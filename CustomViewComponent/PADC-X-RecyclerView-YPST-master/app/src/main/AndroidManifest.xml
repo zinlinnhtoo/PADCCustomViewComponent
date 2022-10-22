@@ -14,10 +14,22 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activities.NewsDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar.TranslucentStatusBar">
-
+            android:name=".activities.CustomComponentActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
+        <activity
+            android:name=".activities.ModifyCustomViewActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.NewsDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatusBar" />
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
